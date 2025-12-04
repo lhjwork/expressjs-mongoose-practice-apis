@@ -30,3 +30,6 @@ const contactSchema = new mongoose.Schema({
     required: false,
   },
 });
+
+//module.exports = mongoose.model("Contact", contactSchema); : contactSchema로 Contact 모델(클래스)을 생성해 현재 모듈의 기본 내보내기값으로 설정합니다.
+module.exports = mongoose.model("Contact", contactSchema);
