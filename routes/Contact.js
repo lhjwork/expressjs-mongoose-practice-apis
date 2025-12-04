@@ -82,5 +82,25 @@ router.get("/search", async (req, res) => {
   }
 });
 
+// Update Functionality - PUT /contact/:id (async/await 버전)
+router.put("/contact/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedContact = req.body;
+
+    const contact = await Contact.findOneAndUpdate({ _id: id }, updatedContact, { new: true });
+
+    if (contact) {
+      console.log(contact);
+      res.status(200).json({ msg: "Contact successfully updated", contact: contact });
+    } else {
+      res.status(404).json({ msg: "Contact not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Unable to update the contact" });
+  }
+});
+
 module.exports = router;
 // POST /api/contact : 새로운 연락처를 생성합니다. 요청 본문에 연락처 정보를 포함해야 합니다.
