@@ -15,7 +15,12 @@ router.post("/contact", async (req, res) => {
       })
       .catch((error) => {
         console.error("Error saving contact:", error);
-        res.status(500).json({ msg: "Failed to save contact" });
+
+        if (error.code === 11000 && error.keyPattern && error.keyPattern.emailAddress) {
+          return res.status(500).json({ msg: "Email address already exists" });
+        } else {
+          res.status(500).json({ msg: "Failed to save contact" });
+        }
       });
   } catch (error) {
     res.status(500).json({ msg: "Unable to save contact" });
