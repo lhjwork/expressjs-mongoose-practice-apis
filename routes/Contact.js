@@ -102,5 +102,26 @@ router.put("/contact/:id", async (req, res) => {
   }
 });
 
+// 2 types of delete
+// 1. Soft Delete - update the field "active" to mark as deleted ->  Y/N
+// 2. Hard Delete - remove from DB
+
+router.delete("/contact/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deletedContact = await Contact.findByIdAndDelete(id);
+
+    if (deletedContact) {
+      console.log(deletedContact);
+      return res.status(200).json({ msg: "Contact Successfully deleted", contact: deletedContact });
+    } else {
+      return res.status(404).json({ msg: "Contact not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Unable to delete the contact" });
+  }
+});
+
 module.exports = router;
 // POST /api/contact : 새로운 연락처를 생성합니다. 요청 본문에 연락처 정보를 포함해야 합니다.
